@@ -12,48 +12,38 @@ def imprimir_campo(mapa_campo):
     
     time.sleep(0.2)
 
-def campo_marcado(mapa_campo, posicao_inicial):
-    # Cria uma cópia do mapa para trabalhar
+def campo_marcado(mapa_campo, inicio):
     mapa_trabalho = [linha[:] for linha in mapa_campo]
     
-    # Obtém as dimensões do mapa
     linhas = len(mapa_trabalho)
     colunas = len(mapa_trabalho[0])
     
-    # Marca a posição inicial
-    y_inicial, x_inicial = posicao_inicial
+    y_inicial, x_inicial = inicio
     mapa_trabalho[y_inicial][x_inicial] = 'O'
     imprimir_campo(mapa_trabalho)
     
-    # Para cada linha do mapa (de cima para baixo)
     for linha in range(1, linhas-1):
-        # Decide a direção da varredura baseada na paridade da linha
-        if linha % 2 == 1:  # Linhas ímpares: esquerda para direita
+        if linha % 2 == 1:
             inicio, fim, passo = 1, colunas-1, 1
-        else:  # Linhas pares: direita para esquerda
+        else:
             inicio, fim, passo = colunas-2, 0, -1
         
-        # Para cada coluna na direção atual
         for coluna in range(inicio, fim, passo):
-            # Se a célula atual for uma parede, pule
             if mapa_trabalho[linha][coluna] == '#':
                 continue
             
-            # Move o robô para a nova posição
             mapa_trabalho[linha][coluna] = 'O'
             imprimir_campo(mapa_trabalho)
             
-            # Marca a posição com semente
             mapa_trabalho[linha][coluna] = '*'
     
-    # Retorna para a posição inicial
     mapa_trabalho[y_inicial][x_inicial] = 'O'
     imprimir_campo(mapa_trabalho)
     
     print("Sementes soltas!")
 
 def Soltar():
-    # Mapa da sala 10x10 com obstáculos
+    # Mapa do campo 10 x 10
     mapa_campo = [
         ['#', '#', '#', '#', '#', '#', '#', '#', '#', '#'],
         ['#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'],
@@ -68,7 +58,7 @@ def Soltar():
     ]
     
     # Posição inicial do robô (linha, coluna)
-    posicao_inicial = (1, 1)
+    inicio = (1, 1)
     
     print("Simulador de Robô Solta_Semente")
     print("Legenda:")
@@ -78,8 +68,7 @@ def Soltar():
     print("  ' ' - Área vazia")
     input("\nPressione Enter para iniciar...")
     
-    # Inicia a plantação
-    campo_marcado(mapa_campo, posicao_inicial)
+    campo_marcado(mapa_campo, inicio)
     
     input("\nPressione Enter para sair...")
 
